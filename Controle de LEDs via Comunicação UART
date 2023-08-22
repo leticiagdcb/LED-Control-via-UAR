@@ -1,0 +1,48 @@
+// Importar a biblioteca para comunicação serial
+#include <SoftwareSerial.h>
+
+// Configurações da comunicação serial
+#define RX_PIN 2
+#define TX_PIN 3
+SoftwareSerial uart(RX_PIN, TX_PIN);  // RX, TX
+
+// Configuração dos LEDs
+#define LED_PIN_1 4
+#define LED_PIN_2 5
+#define LED_PIN_3 6
+
+void setup() {
+  // Inicialização da comunicação serial
+  Serial.begin(9600);
+  uart.begin(9600);
+  
+  // Inicialização dos LEDs
+  pinMode(LED_PIN_1, OUTPUT);
+  pinMode(LED_PIN_2, OUTPUT);
+  pinMode(LED_PIN_3, OUTPUT);
+  
+  // Desligar todos os LEDs no início
+  digitalWrite(LED_PIN_1, LOW);
+  digitalWrite(LED_PIN_2, LOW);
+  digitalWrite(LED_PIN_3, LOW);
+}
+
+void loop() {
+  if (uart.available()) {
+    char command = uart.read(); // Lê o comando da serial
+    
+    switch (command) {
+      case '1':
+        digitalWrite(LED_PIN_1, !digitalRead(LED_PIN_1)); // Inverte o estado do LED
+        break;
+      case '2':
+        digitalWrite(LED_PIN_2, !digitalRead(LED_PIN_2)); // Inverte o estado do LED
+        break;
+      case '3':
+        digitalWrite(LED_PIN_3, !digitalRead(LED_PIN_3)); // Inverte o estado do LED
+        break;
+      default:
+        break;
+    }
+  }
+}
